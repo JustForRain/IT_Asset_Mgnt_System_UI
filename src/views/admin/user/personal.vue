@@ -134,6 +134,7 @@ const passwordFormData = reactive({
 	password: '',
 	newpassword1: '',
 	newpassword2: '',
+	firstLoginFlag: false,
 });
 
 const formdataRef = ref();

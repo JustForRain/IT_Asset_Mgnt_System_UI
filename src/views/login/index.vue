@@ -26,6 +26,8 @@
 				</div>
 			</div>
 		</div>
+		<!-- 初次登录强制修改密码组件 -->
+		<ModifyPassword ref="modifyPasswordRef"/>
 	</div>
 </template>
 
@@ -40,11 +42,13 @@ import { formatAxis } from '/@/utils/formatTime';
 import { useMessage } from '/@/hooks/message';
 import { Session } from '/@/utils/storage';
 import { initBackEndControlRoutes } from '/@/router/backEnd';
+import { useUserInfo } from '/@/stores/userInfo';
 
 // 引入组件
 const Password = defineAsyncComponent(() => import('./component/password.vue'));
 const Mobile = defineAsyncComponent(() => import('./component/mobile.vue'));
 const Register = defineAsyncComponent(() => import('./component/register.vue'));
+const ModifyPassword = defineAsyncComponent(() => import('./component/modify-password.vue'));
 
 // 定义变量内容
 const storesThemeConfig = useThemeConfig();
@@ -52,6 +56,7 @@ const { themeConfig } = storeToRefs(storesThemeConfig);
 const { t } = useI18n();
 const route = useRoute();
 const router = useRouter();
+const modifyPasswordRef = ref();
 
 // 是否开启注册
 const registerEnable = ref(import.meta.env.VITE_REGISTER_ENABLE === 'true');
@@ -67,10 +72,13 @@ const getThemeConfig = computed(() => {
 // 登录成功后的跳转处理事件
 const signInSuccess = async () => {
 	const isNoPower = await initBackEndControlRoutes();
+	const userInfos = useUserInfo().userInfos;
 	if (isNoPower) {
 		useMessage().wraning('抱歉，您没有登录权限');
 		Session.clear();
-	} else {
+	} else if(userInfos.user.firstLoginFlag){
+		modifyPasswordRef.value.openDialog()
+	} else  {
 		// 初始化登录成功时间问候语
 		let currentTimeInfo = formatAxis(new Date());
 		if (route.query?.redirect) {
