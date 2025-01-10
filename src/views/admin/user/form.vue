@@ -10,7 +10,7 @@
 					</el-col>
 					<el-col :span="12" class="mb20">
 						<el-form-item :label="$t('sysuser.password')" prop="password">
-							<el-input clearable placeholder="请输入密码" type="password" v-model="dataForm.password"></el-input>
+							<strength-meter v-model="dataForm.password" :minlength="8" :maxlength="16" placeholder="请输入密码" @score="passwordScore"></strength-meter>
 						</el-form-item>
 					</el-col>
 					<el-col :span="12" class="mb20">
@@ -69,6 +69,13 @@
 							</el-radio-group>
 						</el-form-item>
 					</el-col>
+					<el-col :span="12" class="mb20">
+						<el-form-item label="初次登录修改密码" prop="firstLoginFlag">
+							<el-radio-group v-model="dataForm.firstLoginFlag">
+								<el-radio :key="index" :label="item.value" border v-for="(item, index) in common_status">{{ item.label }} </el-radio>
+							</el-radio-group>
+						</el-form-item>
+					</el-col>
 				</el-row>
 			</el-form>
 			<template #footer>
@@ -91,12 +98,15 @@ import { useI18n } from 'vue-i18n';
 import { useMessage } from '/@/hooks/message';
 import { rule } from '/@/utils/validate';
 
+const StrengthMeter = defineAsyncComponent(() => import('/src/components/StrengthMeter/index.vue'));
+
 const { t } = useI18n();
 
 // 定义刷新表格emit
 const emit = defineEmits(['refresh']);
 // @ts-ignore
 const { lock_flag } = useDict('lock_flag');
+const { common_status } = useDict('common_status')
 
 // 定义变量内容
 const dataFormRef = ref();
@@ -114,6 +124,7 @@ const dataForm = reactive({
 	wxOpenid: '',
 	qqOpenid: '',
 	lockFlag: '0',
+	firstLoginFlag: 'true',
 	phone: '' as String | undefined,
 	deptId: '',
 	roleList: [],
@@ -124,7 +135,17 @@ const dataForm = reactive({
 	post: [] as string[],
 	role: [] as string[],
 });
-
+const score = ref(0);
+const passwordScore = (e) => {
+	score.value = e;
+};
+const validatorScore = (rule: any, value: any, callback: any) => {
+	if (score.value < 3) {
+		callback(new Error("密码需包含字母+数字+特殊字符，且长度为8-20位"));
+	} else {
+		callback();
+	}
+};
 const dataRules = ref({
 	// 用户名校验，不能为空 、长度 5-20、不能和已有数据重复
 	username: [
@@ -140,9 +161,9 @@ const dataRules = ref({
 	password: [
 		{ required: true, message: '密码不能为空', trigger: 'blur' },
 		{
-			min: 6,
+			min: 8,
 			max: 20,
-			message: '用户密码长度必须介于 5 和 20 之间',
+			validator: validatorScore,
 			trigger: 'blur',
 		},
 	],
@@ -167,6 +188,7 @@ const dataRules = ref({
 	],
 	email: [{ type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur', 'change'] }],
 	lockFlag: [{ required: true, message: '状态不能为空', trigger: 'blur' }],
+	firstLoginFlag: [{ required: true, message: '初次登录修改密码', trigger: 'blur' }],
 });
 
 // 打开弹窗

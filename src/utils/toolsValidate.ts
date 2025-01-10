@@ -247,6 +247,7 @@ export function verifyPasswordPowerful(val: string) {
 /**
  * 密码强度
  * @param val 当前值字符串
+ * @description 强制要求8位以上的密码
  * @description 弱：纯数字，纯字母，纯特殊字符
  * @description 中：字母+数字，字母+特殊字符，数字+特殊字符
  * @description 强：字母+数字+特殊字符
@@ -261,6 +262,8 @@ export function verifyPasswordStrength(val: string) {
 	// 强：字母+数字+特殊字符
 	if (/^(?![a-zA-z]+$)(?!\d+$)(?![!@#$%^&\.*]+$)(?![a-zA-z\d]+$)(?![a-zA-z!@#$%^&\.*]+$)(?![\d!@#$%^&\.*]+$)[a-zA-Z\d!@#$%^&\.*]{6,100}$/.test(val))
 		v = '3';
+	// 长度8位以上
+	if (val.length < 8) v = '0';
 	// 返回结果
 	return v;
 }
