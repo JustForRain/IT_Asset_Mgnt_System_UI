@@ -1,21 +1,19 @@
 <template>
   <el-dialog v-model="visible" :close-on-click-modal="false"
-             :title="title" draggable>
+             :title="title" draggable width="30%">
     <el-form v-loading="loading">
       <el-table
           :cell-style="tableStyle.cellStyle"
           :data="tableData"
           :header-cell-style="tableStyle.headerCellStyle"
           :span-method="objectSpanMethod" border
+          :row-style="rowStyleFunc"
           highlight-current-row
-          stripe
       >
         <el-table-column label="编号" prop="unitNum"/>
         <el-table-column label="设备名称" prop="deviceName">
           <template #default="scope">
-            <div style="display: flex; align-items: center">
-              <DeviceCard :message="scope.row.device"/>
-            </div>
+            <DeviceCard :message="scope.row.device"/>
           </template>
         </el-table-column>
         <el-table-column label="编号" prop="unitNum"/>
@@ -76,16 +74,14 @@ const getiamsCabinetDetailData = (id: string) => {
   })
 }
 
-interface Device {
-  unitNum: string
-  deviceName: string
-}
-
-interface SpanMethodProps {
-  row: Device
-  column: TableColumnCtx<Device>
-  rowIndex: number
-  columnIndex: number
+const rowStyleFunc = (row: any, rowIndex: number, column: TableColumnCtx<any>, columnIndex: number) => {
+  if (row.row.device) {
+    return {
+      backgroundColor: 'gray',
+      color: 'white'
+    }
+  }
+  return {};
 }
 
 const spanArr = [];
@@ -121,7 +117,7 @@ const objectSpanMethod = ({
                             column,//当前列
                             rowIndex,//当前行号
                             columnIndex,//当前列号
-                          }: SpanMethodProps) => {
+                          }: Object) => {
 // 只在 assetId 列（第3列）合并
   if (columnIndex === 1) {
     const span = spanArr[rowIndex];
@@ -133,33 +129,6 @@ const objectSpanMethod = ({
   }
   // 其他列保持默认
   return {rowspan: 1, colspan: 1};
-}
-
-//获取合并列数
-const getRowSpanQty = (row, rowIndex, columnIndex, obj) => {
-  if (rowIndex == 0) {
-    //当第一行，就循环判断一下行是否存在相同内容，是则行数+1
-    let isNeedNextRow = true;	//是否继续循环下一行同一个单元格
-    for (let i = 0; i < tableData.value.length; i++) {
-      if (rowIndex != i && isNeedNextRow) {
-        let data = tableData.value[i];
-        if (data[tableData.value[columnIndex]] == row[tableData.value[columnIndex]]) {
-          obj.rowspan++;
-          isNeedNextRow = true;
-        } else {
-          isNeedNextRow = false;
-        }
-      }
-    }
-  } else {
-    let data = tableData.value[rowIndex - 1];
-    if (data[tableData.value[columnIndex]] == row[tableData.value[columnIndex]]) {
-      //当不是第一行，则判断当前单元格与上一行的当前单元格是否一致，一致则不显示
-      obj.rowspan = 0;
-      obj.colspan = 0;
-    }
-  }
-  return obj;
 }
 
 // 暴露变量

@@ -60,8 +60,6 @@
 import { BasicTableProps, useTable } from "/@/hooks/table";
 import { fetchList, delObjs } from "/@/api/iams/iamsCabinet";
 import { useMessage, useMessageBox } from "/@/hooks/message";
-import { useDict } from '/@/hooks/dict';
-import CabinetDetail from "/@/views/iams/iamsCabinet/cabinetDetail.vue";
 
 // 引入组件
 const FormDialog = defineAsyncComponent(() => import('./form.vue'));

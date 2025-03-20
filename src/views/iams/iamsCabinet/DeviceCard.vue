@@ -43,6 +43,8 @@ const props = defineProps({
 .deviceCard {
   width: 100%;
   text-align: center;
-  background-color: gray;
+}
+.deviceCard > div {
+  color: white;
 }
 </style>

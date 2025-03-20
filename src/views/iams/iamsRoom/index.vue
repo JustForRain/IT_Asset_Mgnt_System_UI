@@ -38,7 +38,6 @@
 
     <!-- 编辑、新增  -->
     <form-dialog ref="formDialogRef" @refresh="getDataList(false)" />
-
   </div>
 </template>
 
@@ -46,7 +45,6 @@
 import { BasicTableProps, useTable } from "/@/hooks/table";
 import { fetchList, delObjs } from "/@/api/iams/iamsRoom";
 import { useMessage, useMessageBox } from "/@/hooks/message";
-import { useDict } from '/@/hooks/dict';
 
 // 引入组件
 const FormDialog = defineAsyncComponent(() => import('./form.vue'));

@@ -14,9 +14,6 @@
         <el-col :span="12" class="mb20">
           <el-form-item label="设备角色" prop="role">
             <el-input v-model="form.role" placeholder="请输入设备角色"/>
-<!--            <el-select v-model="form.role" placeholder="请选择上架设备">-->
-<!--              <el-option v-for="item in iamsAssetOption" :key="item.value" :label="item.label" :value="item.value" @click="copyText(item.label)"/>-->
-<!--            </el-select>-->
           </el-form-item>
         </el-col>
 
@@ -40,13 +37,10 @@
 
 <script setup lang="ts" name="IamsCabinetDialog">
 
-import {useDict} from '/@/hooks/dict';
 import {useMessage} from "/@/hooks/message";
-import {getObj, addObj, putObj, getUnit} from '/@/api/iams/iamsCabinet'
+import {getUnit} from '/@/api/iams/iamsCabinet'
 import {getObj as getObjAsset, fetchListNoPage} from '/@/api/iams/iamsAsset'
 import {addObj as putOn} from '/@/api/iams/iamsShelf'
-import {fetchList} from '/@/api/iams/iamsModule'
-import {rule} from '/@/utils/validate';
 import commonFunction from '/@/utils/commonFunction';
 const { copyText } = commonFunction();
 
@@ -110,16 +104,6 @@ const onSubmit = async () => {
 };
 
 // 初始化表单数据
-const getiamsCabinetData = (id: string) => {
-  // 获取数据
-  loading.value = true
-  getObj(id).then((res: any) => {
-    Object.assign(form, res.data)
-  }).finally(() => {
-    loading.value = false
-  })
-};
-
 // 获取设备列表
 const iamsAssetOption = ref()
 const getIamsAssetData = () => {
