@@ -43,7 +43,6 @@ const props = defineProps({
 
 const unitDetails = ref([])
 const title = ref("")
-// const DeviceDetailDialog = () => import('./deviceDetail.vue');
 const DeviceDetailDialog = defineAsyncComponent(() => import('./deviceDetail.vue'));
 
 const deviceDetailDialogRef = ref()

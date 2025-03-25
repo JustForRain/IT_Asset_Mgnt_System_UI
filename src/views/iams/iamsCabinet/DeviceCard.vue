@@ -1,7 +1,7 @@
 <template>
   <div v-if="device" :class="deviceSizeClass">
     <template v-if="device.role">
-      设备角色：{{ device.role }}
+      {{ device.role }}
     </template>
   </div>
 </template>
