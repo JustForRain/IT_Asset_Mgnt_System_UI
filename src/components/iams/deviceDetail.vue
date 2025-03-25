@@ -32,12 +32,10 @@
           </el-form-item>
         </el-col>
       </el-row>
-<!--      循环体开始-->
       <div v-for="(item) in form.accountList">
       <el-divider />
       <account :account="item"/>
       </div>
-<!--      循环体结束-->
     </el-form>
     <template #footer>
         <span class="dialog-footer">
@@ -73,7 +71,6 @@ const getIamsAssetDetail = (id: string) => {
   loading.value = true
   getDetail(id).then((res: any) => {
     Object.assign(form, res.data)
-    console.log(form)
   }).finally(() => {
     loading.value = false
   })

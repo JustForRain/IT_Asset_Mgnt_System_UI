@@ -2,7 +2,7 @@ import request from "/@/utils/request"
 
 export function fetchList(query?: Object) {
   return request({
-    url: '/iams/iamsAccount/page',
+    url: '/iams/iamsPasswordLog/page',
     method: 'get',
     params: query
   })
@@ -10,7 +10,7 @@ export function fetchList(query?: Object) {
 
 export function addObj(obj?: Object) {
   return request({
-    url: '/iams/iamsAccount',
+    url: '/iams/iamsPasswordLog',
     method: 'post',
     data: obj
   })
@@ -18,14 +18,14 @@ export function addObj(obj?: Object) {
 
 export function getObj(id?: string) {
   return request({
-    url: '/iams/iamsAccount/' + id,
+    url: '/iams/iamsPasswordLog/' + id,
     method: 'get'
   })
 }
 
 export function delObjs(ids?: Object) {
   return request({
-    url: '/iams/iamsAccount',
+    url: '/iams/iamsPasswordLog',
     method: 'delete',
     data: ids
   })
@@ -33,15 +33,7 @@ export function delObjs(ids?: Object) {
 
 export function putObj(obj?: Object) {
   return request({
-    url: '/iams/iamsAccount',
-    method: 'put',
-    data: obj
-  })
-}
-
-export function changePassword(obj?: Object) {
-  return request({
-    url: '/iams/iamsAccount/changePassword',
+    url: '/iams/iamsPasswordLog',
     method: 'put',
     data: obj
   })

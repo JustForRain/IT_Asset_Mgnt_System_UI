@@ -4,14 +4,14 @@
       <el-row>
         <div class="mb8" style="width: 100%">
           <el-button icon="folder-add" type="primary" class="ml10" @click="formDialogRef.openDialog()"
-            v-auth="'iams_iamsAccount_add'">
+            v-auth="'iams_iamsPasswordLog_add'">
             新 增
           </el-button>
           <el-button plain :disabled="multiple" icon="Delete" type="primary"
-            v-auth="'iams_iamsAccount_del'" @click="handleDelete(selectObjs)">
+            v-auth="'iams_iamsPasswordLog_del'" @click="handleDelete(selectObjs)">
             删除
           </el-button>
-          <right-toolbar v-model:showSearch="showSearch" :export="'iams_iamsAccount_export'"
+          <right-toolbar v-model:showSearch="showSearch" :export="'iams_iamsPasswordLog_export'"
                 @exportExcel="exportExcel" class="ml10 mr20" style="float: right;"
             @queryTable="getDataList"></right-toolbar>
         </div>
@@ -22,18 +22,16 @@
         @sort-change="sortChangeHandle">
         <el-table-column type="selection" width="40" align="center" />
         <el-table-column type="index" label="#" width="40" />
-          <el-table-column prop="role" label="设备角色"  show-overflow-tooltip/>
-          <el-table-column prop="type" label="类型"  show-overflow-tooltip/>
-          <el-table-column prop="protocol" label="协议"  show-overflow-tooltip/>
-          <el-table-column prop="url" label="地址"  show-overflow-tooltip/>
-          <el-table-column prop="port" label="端口"  show-overflow-tooltip/>
-          <el-table-column prop="account" label="账号"  show-overflow-tooltip/>
-          <el-table-column prop="password" label="密码"  show-overflow-tooltip/>
+          <el-table-column prop="assetId" label="设备"  show-overflow-tooltip/>
+          <el-table-column prop="accountId" label="账户"  show-overflow-tooltip/>
+          <el-table-column prop="oldPassword" label="新密码"  show-overflow-tooltip/>
+          <el-table-column prop="newPassword" label="旧密码"  show-overflow-tooltip/>
+          <el-table-column prop="createTime" label="修改日期"  show-overflow-tooltip/>
         <el-table-column label="操作" width="150">
           <template #default="scope">
-            <el-button icon="edit-pen" text type="primary" v-auth="'iams_iamsAccount_edit'"
+            <el-button icon="edit-pen" text type="primary" v-auth="'iams_iamsPasswordLog_edit'"
               @click="formDialogRef.openDialog(scope.row.id)">编辑</el-button>
-            <el-button icon="delete" text type="primary" v-auth="'iams_iamsAccount_del'" @click="handleDelete([scope.row.id])">删除</el-button>
+            <el-button icon="delete" text type="primary" v-auth="'iams_iamsPasswordLog_del'" @click="handleDelete([scope.row.id])">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -46,9 +44,9 @@
   </div>
 </template>
 
-<script setup lang="ts" name="systemIamsAccount">
+<script setup lang="ts" name="systemIamsPasswordLog">
 import { BasicTableProps, useTable } from "/@/hooks/table";
-import { fetchList, delObjs } from "/@/api/iams/iamsAccount";
+import { fetchList, delObjs } from "/@/api/iams/iamsPasswordLog";
 import { useMessage, useMessageBox } from "/@/hooks/message";
 import { useDict } from '/@/hooks/dict';
 
@@ -91,7 +89,7 @@ const resetQuery = () => {
 
 // 导出excel
 const exportExcel = () => {
-  downBlobFile('/iams/iamsAccount/export',Object.assign(state.queryForm, { ids: selectObjs }), 'iamsAccount.xlsx')
+  downBlobFile('/iams/iamsPasswordLog/export',Object.assign(state.queryForm, { ids: selectObjs }), 'iamsPasswordLog.xlsx')
 }
 
 // 多选事件

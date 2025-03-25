@@ -407,6 +407,10 @@ const other = {
 	addUnit: (value: string | number, unit = 'px') => {
 		return addUnit(value, unit);
 	},
+
+	generatePassword: (length: number) => {
+		return generatePassword(length);
+	},
 };
 
 export function getQueryString(url: string, paraName: string) {
@@ -534,6 +538,19 @@ const getNonDuplicateID = (length = 8) => {
 const addUnit = (value: string | number, unit = 'px') => {
 	return !Object.is(Number(value), NaN) ? `${value}${unit}` : value;
 };
+ const generatePassword = (length = 8)=>{
+	     let pass = '';
+    let str = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ' +
+        'abcdefghijklmnopqrstuvwxyz' +
+	'`~!@#$%^&*()_+-=[]{};:\'\",./<>';
 
+    for (let i = 1; i <= length; i++) {
+        let char = Math.floor(Math.random()
+            * str.length + 1);
+
+        pass += str.charAt(char)
+    }
+	return pass;
+ }
 // 统一批量导出
 export default other;

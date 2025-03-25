@@ -1,47 +1,29 @@
 <template>
     <el-dialog :title="form.id ? '编辑' : '新增'" v-model="visible"
       :close-on-click-modal="false" draggable>
-      <el-form ref="dataFormRef" :model="form" :rules="dataRules" formDialogRef label-width="100px" v-loading="loading">
+      <el-form ref="dataFormRef" :model="form" :rules="dataRules" formDialogRef label-width="90px" v-loading="loading">
        <el-row :gutter="24">
     <el-col :span="12" class="mb20">
-      <el-form-item label="设备序列号" prop="sn">
-        <el-input v-model="form.sn" placeholder="请输入设备序列号"/>
+      <el-form-item label="账户ID" prop="accountId">
+        <el-input v-model="form.accountId" placeholder="请输入账户ID"/>
       </el-form-item>
       </el-col>
 
     <el-col :span="12" class="mb20">
-      <el-form-item label="地址" prop="url">
-        <el-input v-model="form.url" placeholder="请输入地址"/>
+      <el-form-item label="设备ID" prop="assetId">
+        <el-input v-model="form.assetId" placeholder="请输入设备ID"/>
       </el-form-item>
       </el-col>
 
     <el-col :span="12" class="mb20">
-      <el-form-item label="端口" prop="port">
-        <el-input v-model="form.port" placeholder="请输入地址"/>
+      <el-form-item label="新密码" prop="oldPassword">
+        <el-input v-model="form.oldPassword" placeholder="请输入新密码"/>
       </el-form-item>
       </el-col>
 
     <el-col :span="12" class="mb20">
-      <el-form-item label="类型" prop="type">
-        <el-input v-model="form.type" placeholder="请输入类型"/>
-      </el-form-item>
-      </el-col>
-
-    <el-col :span="12" class="mb20">
-      <el-form-item label="协议" prop="protocol">
-        <el-input v-model="form.protocol" placeholder="请输入协议"/>
-      </el-form-item>
-      </el-col>
-
-    <el-col :span="12" class="mb20">
-      <el-form-item label="账号" prop="account">
-        <el-input v-model="form.account" placeholder="请输入账号"/>
-      </el-form-item>
-      </el-col>
-
-    <el-col :span="12" class="mb20">
-      <el-form-item label="密码" prop="password">
-        <el-input v-model="form.password" placeholder="请输入密码"/>
+      <el-form-item label="旧密码" prop="newPassword">
+        <el-input v-model="form.newPassword" placeholder="请输入旧密码"/>
       </el-form-item>
       </el-col>
 
@@ -56,10 +38,10 @@
     </el-dialog>
 </template>
 
-<script setup lang="ts" name="IamsAccountDialog">
+<script setup lang="ts" name="IamsPasswordLogDialog">
 import { useDict } from '/@/hooks/dict';
 import { useMessage } from "/@/hooks/message";
-import { getObj, addObj, putObj } from '/@/api/iams/iamsAccount'
+import { getObj, addObj, putObj } from '/@/api/iams/iamsPasswordLog'
 import { rule } from '/@/utils/validate';
 const emit = defineEmits(['refresh']);
 
@@ -72,24 +54,18 @@ const loading = ref(false)
 // 提交表单数据
 const form = reactive({
 		id:'',
+	  accountId: '',
 	  assetId: '',
-	  sn: '',
-	  url: '',
-	  type: '',
-	  account: '',
-	  password: '',
-    protocol: '',
-    port: '',
+	  oldPassword: '',
+	  newPassword: '',
 });
 
 // 定义校验规则
 const dataRules = ref({
-        sn: [{required: true, message: '设备序列号', trigger: 'blur'}],
-        url: [{required: true, message: '地址不能为空', trigger: 'blur'}],
-        type: [{required: true, message: '类型不能为空', trigger: 'blur'}],
-        protocol: [{required: true, message: '协议不能为空', trigger: 'blur'}],
-        account: [{required: true, message: '账号不能为空', trigger: 'blur'}],
-        password: [{required: true, message: '密码不能为空', trigger: 'blur'}],
+        accountId: [{required: true, message: '账户ID不能为空', trigger: 'blur'}],
+        assetId: [{required: true, message: '设备ID不能为空', trigger: 'blur'}],
+        oldPassword: [{required: true, message: '新密码不能为空', trigger: 'blur'}],
+        newPassword: [{required: true, message: '旧密码不能为空', trigger: 'blur'}],
 })
 
 // 打开弹窗
@@ -102,10 +78,10 @@ const openDialog = (id: string) => {
 		dataFormRef.value?.resetFields();
 	});
 
-  // 获取iamsAccount信息
+  // 获取iamsPasswordLog信息
   if (id) {
     form.id = id
-    getiamsAccountData(id)
+    getiamsPasswordLogData(id)
   }
 };
 
@@ -129,7 +105,7 @@ const onSubmit = async () => {
 
 
 // 初始化表单数据
-const getiamsAccountData = (id: string) => {
+const getiamsPasswordLogData = (id: string) => {
   // 获取数据
   loading.value = true
   getObj(id).then((res: any) => {
