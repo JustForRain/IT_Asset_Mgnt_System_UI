@@ -39,3 +39,10 @@ export function putObj(obj?: Object) {
   })
 }
 
+export function getRoomDetail(id?: string) {
+  return request({
+    url: '/iams/iamsRoom/unit/detail/' + id,
+    method: 'get'
+  })
+}
+

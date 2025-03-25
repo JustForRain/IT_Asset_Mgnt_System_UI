@@ -1,45 +1,44 @@
 <template>
-    <el-dialog :title="form.id ? '编辑' : '新增'" v-model="visible"
-      :close-on-click-modal="false" draggable>
-      <el-form ref="dataFormRef" :model="form" :rules="dataRules" formDialogRef label-width="90px" v-loading="loading">
-       <el-row :gutter="24">
-    <el-col :span="12" class="mb20">
-      <el-form-item label="所属机房" prop="roomId">
+  <el-dialog v-model="visible" :close-on-click-modal="false"
+             :title="form.id ? '编辑' : '新增'" draggable>
+    <el-form ref="dataFormRef" v-loading="loading" :model="form" :rules="dataRules" formDialogRef label-width="90px">
+      <el-row :gutter="24">
+        <el-col :span="12" class="mb20">
+          <el-form-item label="所属机房" prop="roomId">
             <el-select v-model="form.roomId" placeholder="请选择所属机房">
-              <el-option v-for="item in getiamsRoomOption" :key="item.id" :label="item.name" :value="item.id" />
+              <el-option v-for="item in getiamsRoomOption" :key="item.id" :label="item.name" :value="item.id"/>
             </el-select>
-      </el-form-item>
-      </el-col>
+          </el-form-item>
+        </el-col>
 
-    <el-col :span="12" class="mb20">
-      <el-form-item label="微模块名称" prop="name">
-        <el-input v-model="form.name" placeholder="请输入微模块名称"/>
-      </el-form-item>
-      </el-col>
+        <el-col :span="12" class="mb20">
+          <el-form-item label="微模块名称" prop="name">
+            <el-input v-model="form.name" placeholder="请输入微模块名称"/>
+          </el-form-item>
+        </el-col>
 
-    <el-col :span="12" class="mb20">
-      <el-form-item label="机柜数量" prop="size">
-        <el-input v-model="form.size" placeholder="请输入机柜数量"/>
-      </el-form-item>
-      </el-col>
+        <el-col :span="12" class="mb20">
+          <el-form-item label="机柜数量" prop="size">
+            <el-input v-model="form.size" placeholder="请输入机柜数量"/>
+          </el-form-item>
+        </el-col>
 
-			</el-row>
-      </el-form>
-      <template #footer>
+      </el-row>
+    </el-form>
+    <template #footer>
         <span class="dialog-footer">
           <el-button @click="visible = false">取消</el-button>
-          <el-button type="primary" @click="onSubmit" :disabled="loading">确认</el-button>
+          <el-button :disabled="loading" type="primary" @click="onSubmit">确认</el-button>
         </span>
-      </template>
-    </el-dialog>
+    </template>
+  </el-dialog>
 </template>
 
-<script setup lang="ts" name="IamsModuleDialog">
-import { useDict } from '/@/hooks/dict';
-import { useMessage } from "/@/hooks/message";
-import { getObj, addObj, putObj } from '/@/api/iams/iamsModule'
+<script lang="ts" name="IamsModuleDialog" setup>
+import {useMessage} from "/@/hooks/message";
+import {addObj, getObj, putObj} from '/@/api/iams/iamsModule'
 import {fetchList} from '/@/api/iams/iamsRoom'
-import { rule } from '/@/utils/validate';
+
 const emit = defineEmits(['refresh']);
 
 // 定义变量内容
@@ -50,17 +49,17 @@ const loading = ref(false)
 
 // 提交表单数据
 const form = reactive({
-		id:'',
-	  roomId: '',
-	  name: '',
-	  size: '',
+  id: '',
+  roomId: '',
+  name: '',
+  size: '',
 });
 
 // 定义校验规则
 const dataRules = ref({
-        roomId: [{required: true, message: '所属机房不能为空', trigger: 'blur'}],
-        name: [{required: true, message: '微模块名称不能为空', trigger: 'blur'}],
-        size: [{required: true, message: '机柜数量不能为空', trigger: 'blur'}],
+  roomId: [{required: true, message: '所属机房不能为空', trigger: 'blur'}],
+  name: [{required: true, message: '微模块名称不能为空', trigger: 'blur'}],
+  size: [{required: true, message: '机柜数量不能为空', trigger: 'blur'}],
 })
 
 // 打开弹窗
@@ -69,9 +68,9 @@ const openDialog = (id: string) => {
   form.id = ''
 
   // 重置表单数据
-	nextTick(() => {
-		dataFormRef.value?.resetFields();
-	});
+  nextTick(() => {
+    dataFormRef.value?.resetFields();
+  });
   getiamsRoomData()
   // 获取iamsModule信息
   if (id) {
@@ -82,18 +81,19 @@ const openDialog = (id: string) => {
 
 // 提交
 const onSubmit = async () => {
-	const valid = await dataFormRef.value.validate().catch(() => {});
-	if (!valid) return false;
+  const valid = await dataFormRef.value.validate().catch(() => {
+  });
+  if (!valid) return false;
 
-	try {
+  try {
     loading.value = true;
-		form.id ? await putObj(form) : await addObj(form);
-		useMessage().success(form.id ? '修改成功' : '添加成功');
-		visible.value = false;
-		emit('refresh');
-	} catch (err: any) {
-		useMessage().error(err.msg);
-	} finally {
+    form.id ? await putObj(form) : await addObj(form);
+    useMessage().success(form.id ? '修改成功' : '添加成功');
+    visible.value = false;
+    emit('refresh');
+  } catch (err: any) {
+    useMessage().error(err.msg);
+  } finally {
     loading.value = false;
   }
 };
@@ -116,7 +116,7 @@ const getiamsRoomData = () => {
   // 获取数据
   loading.value = true
   fetchList().then((res: any) => {
-    getiamsRoomOption.value=res.data.records
+    getiamsRoomOption.value = res.data.records
   }).finally(() => {
     loading.value = false
   })

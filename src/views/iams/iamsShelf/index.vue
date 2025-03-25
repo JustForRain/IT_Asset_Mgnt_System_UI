@@ -22,12 +22,12 @@
         @sort-change="sortChangeHandle">
         <el-table-column type="selection" width="40" align="center" />
         <el-table-column type="index" label="#" width="40" />
-        <el-table-column prop="roomName" label="所在机房" show-overflow-tooltip/>
-        <el-table-column prop="moduleName" label="所在微模块" show-overflow-tooltip/>
-        <el-table-column prop="cabinetName" label="所在机柜" show-overflow-tooltip/>
-        <el-table-column prop="shelfName" label="所在机架" show-overflow-tooltip/>
+        <el-table-column prop="room" label="所在机房" show-overflow-tooltip/>
+        <el-table-column prop="module" label="所在微模块" show-overflow-tooltip/>
+        <el-table-column prop="cabinet" label="所在机柜" show-overflow-tooltip/>
+        <el-table-column prop="shelf" label="所在机架" show-overflow-tooltip/>
 <!--          <el-table-column prop="cabinetId" label="机柜编号"  show-overflow-tooltip/>-->
-        <el-table-column prop="roleName" label="设备角色" show-overflow-tooltip/>
+        <el-table-column prop="role" label="设备角色" show-overflow-tooltip/>
 <!--          <el-table-column prop="assetId" label="资产编号"  show-overflow-tooltip/>-->
 <!--        <el-table-column prop="shelfName" label="所在机架" show-overflow-tooltip/>-->
 

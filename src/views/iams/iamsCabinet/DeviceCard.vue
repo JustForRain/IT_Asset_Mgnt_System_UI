@@ -1,17 +1,8 @@
 <template>
-  <div v-if="message" class="deviceCard">
-    <div v-if="message.brandName">
-      设备品牌：{{ message.brandName }}
-    </div>
-    <div v-if="message.deviceName">
-      设备名称：{{ message.deviceName }}
-    </div>
-    <div v-if="message.sn">
-      序列号：{{ message.sn }}
-    </div>
-    <div v-if="message.role">
-      设备角色：{{ message.role }}
-    </div>
+  <div v-if="device" :class="deviceSizeClass">
+    <template v-if="device.role">
+      设备角色：{{ device.role }}
+    </template>
   </div>
 </template>
 
@@ -20,7 +11,7 @@ import {defineProps} from 'vue';
 
 const props = defineProps({
   // 数据
-  message: {
+  device: {
     type: Object,
     default: () => {
       return {
@@ -37,14 +28,27 @@ const props = defineProps({
     },
   }
 });
+const deviceSizeClass = computed(() => {
+  if(props.device.size>1){
+    return 'deviceCard'
+  }else {
+    return 'deviceCardOne'
+  }
+});
+
 </script>
 
 <style lang="scss" scoped>
-.deviceCard {
-  width: 100%;
-  text-align: center;
+.deviceCardOne{
+    text-overflow: ellipsis;
+    overflow: hidden;
+    word-break: break-all;
+    white-space: nowrap;
 }
-.deviceCard > div {
-  color: white;
+
+.deviceCard{
+    text-overflow: ellipsis;
+    overflow: hidden;
+    word-break: break-all;
 }
 </style>

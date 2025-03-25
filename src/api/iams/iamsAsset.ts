@@ -47,3 +47,10 @@ export function fetchListNoPage(query?: Object) {
   })
 }
 
+export function getDetail(id?: string) {
+  return request({
+    url: '/iams/iamsAsset/detail/' + id,
+    method: 'get'
+  })
+}
+

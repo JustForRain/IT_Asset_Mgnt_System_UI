@@ -57,12 +57,12 @@
           </template>
         </el-table-column>
         <el-table-column prop="sn" label="序列号" show-overflow-tooltip/>
-        <el-table-column prop="projectName" label="关联合同" show-overflow-tooltip/>
-        <el-table-column prop="roomName" label="所在机房" show-overflow-tooltip/>
-        <el-table-column prop="moduleName" label="所在微模块" show-overflow-tooltip/>
-        <el-table-column prop="cabinetName" label="所在机柜" show-overflow-tooltip/>
-        <el-table-column prop="shelfName" label="所在机架" show-overflow-tooltip/>
-        <el-table-column prop="roleName" label="设备角色" show-overflow-tooltip/>
+        <el-table-column prop="project" label="关联合同" show-overflow-tooltip/>
+        <el-table-column prop="room" label="所在机房" show-overflow-tooltip/>
+        <el-table-column prop="module" label="所在微模块" show-overflow-tooltip/>
+        <el-table-column prop="cabinet" label="所在机柜" show-overflow-tooltip/>
+        <el-table-column prop="shelf" label="所在机架" show-overflow-tooltip/>
+        <el-table-column prop="role" label="设备角色" show-overflow-tooltip/>
         <el-table-column label="操作" width="150">
           <template #default="scope">
             <el-button icon="edit-pen" text type="primary" v-auth="'iams_iamsAsset_edit'"

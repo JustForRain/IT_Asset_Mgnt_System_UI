@@ -30,6 +30,7 @@
             <el-button icon="edit-pen" text type="primary" v-auth="'iams_iamsModule_edit'"
               @click="formDialogRef.openDialog(scope.row.id)">编辑</el-button>
             <el-button icon="delete" text type="primary" v-auth="'iams_iamsModule_del'" @click="handleDelete([scope.row.id])">删除</el-button>
+            <el-button icon="delete" text type="primary" v-auth="'iams_iamsModule_view'" @click="moduleDetailDialogRef.openDialog(scope.row.id)">查看</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -38,6 +39,8 @@
 
     <!-- 编辑、新增  -->
     <form-dialog ref="formDialogRef" @refresh="getDataList(false)" />
+
+    <module-detail-dialog ref="moduleDetailDialogRef" />
 
   </div>
 </template>
@@ -50,10 +53,12 @@ import { useDict } from '/@/hooks/dict';
 
 // 引入组件
 const FormDialog = defineAsyncComponent(() => import('./form.vue'));
+const ModuleDetailDialog = defineAsyncComponent(() => import('./moduleDetail.vue'));
 // 定义查询字典
 
 // 定义变量内容
 const formDialogRef = ref()
+const moduleDetailDialogRef =ref()
 // 搜索变量
 const queryRef = ref()
 const showSearch = ref(true)
