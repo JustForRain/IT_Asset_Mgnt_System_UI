@@ -1,66 +1,106 @@
 <template>
-    <el-dialog :title="form.id ? '编辑' : '新增'" v-model="visible"
-      :close-on-click-modal="false" draggable>
-      <el-form ref="dataFormRef" :model="form" :rules="dataRules" formDialogRef label-width="100px" v-loading="loading">
-       <el-row :gutter="24">
-    <el-col :span="12" class="mb20">
-      <el-form-item label="设备序列号" prop="sn">
-        <el-input v-model="form.sn" placeholder="请输入设备序列号"/>
-      </el-form-item>
-      </el-col>
+  <el-dialog v-model="visible" :close-on-click-modal="false"
+             :title="form.id ? '编辑' : '新增'" draggable>
+    <el-form ref="dataFormRef" v-loading="loading" :model="form" :rules="dataRules" formDialogRef label-width="100px">
+      <el-row :gutter="24" v-show="form.single">
+        <el-col :span='24' class="mb20">
+          <el-form-item  label="设备序列号" prop="sn">
+            <el-input v-model="form.sn" placeholder="请输入设备序列号">
+              <template #append>
+                <el-switch
+                    v-model="form.single"
+                    active-text="单一设备"
+                    inactive-text="多合一设备"
+                    inline-prompt
+                />
+              </template>
+            </el-input>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row :gutter="24" v-show="!form.single">
+        <el-col :span='24' class="mb20">
+          <el-form-item  label="设备序列号" prop="sns">
+            <div style="display: flex;width: 100%">
+              <el-select v-model="form.sns" clearable collapse-tags filterable multiple placeholder="请选择设备"
+                         style="flex: 1">
+                <el-option v-for="(item, index) in snList"
+                           :key="index"
+                           :label="item.label"
+                           :value="item.value"
+                />
+              </el-select>
+              <el-switch
+                  v-model="form.single"
+                  active-text="单一设备"
+                  inactive-text="多合一设备"
+                  inline-prompt
+                  style="margin: 0 10px"
+              />
+            </div>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row :gutter="24">
 
-    <el-col :span="12" class="mb20">
-      <el-form-item label="地址" prop="url">
-        <el-input v-model="form.url" placeholder="请输入地址"/>
-      </el-form-item>
-      </el-col>
+        <el-col :span="12" class="mb20">
+          <el-form-item label="MAC地址" prop="macAddress">
+            <el-input v-model="form.macAddress" placeholder="请输入MAC地址"/>
+          </el-form-item>
+        </el-col>
 
-    <el-col :span="12" class="mb20">
-      <el-form-item label="端口" prop="port">
-        <el-input v-model="form.port" placeholder="请输入地址"/>
-      </el-form-item>
-      </el-col>
+        <el-col :span="12" class="mb20">
+          <el-form-item label="地址" prop="url">
+            <el-input v-model="form.url" placeholder="请输入地址"/>
+          </el-form-item>
+        </el-col>
 
-    <el-col :span="12" class="mb20">
-      <el-form-item label="类型" prop="type">
-        <el-input v-model="form.type" placeholder="请输入类型"/>
-      </el-form-item>
-      </el-col>
+        <el-col :span="12" class="mb20">
+          <el-form-item label="端口" prop="port">
+            <el-input v-model="form.port" placeholder="请输入端口"/>
+          </el-form-item>
+        </el-col>
 
-    <el-col :span="12" class="mb20">
-      <el-form-item label="协议" prop="protocol">
-        <el-input v-model="form.protocol" placeholder="请输入协议"/>
-      </el-form-item>
-      </el-col>
+        <el-col :span="12" class="mb20">
+          <el-form-item label="类型" prop="type">
+            <el-input v-model="form.type" placeholder="请输入类型"/>
+          </el-form-item>
+        </el-col>
 
-    <el-col :span="12" class="mb20">
-      <el-form-item label="账号" prop="account">
-        <el-input v-model="form.account" placeholder="请输入账号"/>
-      </el-form-item>
-      </el-col>
+        <el-col :span="12" class="mb20">
+          <el-form-item label="协议" prop="protocol">
+            <el-input v-model="form.protocol" placeholder="请输入协议"/>
+          </el-form-item>
+        </el-col>
 
-    <el-col :span="12" class="mb20">
-      <el-form-item label="密码" prop="password">
-        <el-input v-model="form.password" placeholder="请输入密码"/>
-      </el-form-item>
-      </el-col>
+        <el-col :span="12" class="mb20">
+          <el-form-item label="账号" prop="account">
+            <el-input v-model="form.account" placeholder="请输入账号"/>
+          </el-form-item>
+        </el-col>
 
-			</el-row>
-      </el-form>
-      <template #footer>
+        <el-col :span="12" class="mb20">
+          <el-form-item label="密码" prop="password">
+            <el-input v-model="form.password" :readonly="form.id!==''" placeholder="请输入密码"/>
+          </el-form-item>
+        </el-col>
+
+      </el-row>
+    </el-form>
+    <template #footer>
         <span class="dialog-footer">
           <el-button @click="visible = false">取消</el-button>
-          <el-button type="primary" @click="onSubmit" :disabled="loading">确认</el-button>
+          <el-button :disabled="loading" type="primary" @click="onSubmit">确认</el-button>
         </span>
-      </template>
-    </el-dialog>
+    </template>
+  </el-dialog>
 </template>
 
-<script setup lang="ts" name="IamsAccountDialog">
-import { useDict } from '/@/hooks/dict';
-import { useMessage } from "/@/hooks/message";
-import { getObj, addObj, putObj } from '/@/api/iams/iamsAccount'
-import { rule } from '/@/utils/validate';
+<script lang="ts" name="IamsAccountDialog" setup>
+import {useMessage} from "/@/hooks/message";
+import {addObj, getObj, putObj} from '/@/api/iams/iamsAccount'
+import {fetchListNoPage} from '/@/api/iams/iamsAsset'
+
 const emit = defineEmits(['refresh']);
 
 // 定义变量内容
@@ -71,25 +111,32 @@ const loading = ref(false)
 
 // 提交表单数据
 const form = reactive({
-		id:'',
-	  assetId: '',
-	  sn: '',
-	  url: '',
-	  type: '',
-	  account: '',
-	  password: '',
-    protocol: '',
-    port: '',
+  id: '',
+  assetId: '',
+  sn: '',
+  vsn: '',
+  sns: [],
+  url: '',
+  type: '',
+  account: '',
+  password: '',
+  protocol: '',
+  port: '',
+  macAddress: '',
+  single: true,
 });
 
 // 定义校验规则
 const dataRules = ref({
-        sn: [{required: true, message: '设备序列号', trigger: 'blur'}],
-        url: [{required: true, message: '地址不能为空', trigger: 'blur'}],
-        type: [{required: true, message: '类型不能为空', trigger: 'blur'}],
-        protocol: [{required: true, message: '协议不能为空', trigger: 'blur'}],
-        account: [{required: true, message: '账号不能为空', trigger: 'blur'}],
-        password: [{required: true, message: '密码不能为空', trigger: 'blur'}],
+  sn: [{required: true, message: '设备序列号', trigger: 'blur'}],
+  sns: [{required: true, message: '设备序列号', trigger: 'blur'}],
+  url: [{required: true, message: '地址不能为空', trigger: 'blur'}],
+  macAddress: [{required: true, message: 'MAC地址不能为空', trigger: 'blur'}],
+  port: [{required: true, message: '端口不能为空', trigger: 'blur'}],
+  type: [{required: true, message: '类型不能为空', trigger: 'blur'}],
+  protocol: [{required: true, message: '协议不能为空', trigger: 'blur'}],
+  account: [{required: true, message: '账号不能为空', trigger: 'blur'}],
+  password: [{required: true, message: '密码不能为空', trigger: 'blur'}],
 })
 
 // 打开弹窗
@@ -98,9 +145,9 @@ const openDialog = (id: string) => {
   form.id = ''
 
   // 重置表单数据
-	nextTick(() => {
-		dataFormRef.value?.resetFields();
-	});
+  nextTick(() => {
+    dataFormRef.value?.resetFields();
+  });
 
   // 获取iamsAccount信息
   if (id) {
@@ -111,18 +158,19 @@ const openDialog = (id: string) => {
 
 // 提交
 const onSubmit = async () => {
-	const valid = await dataFormRef.value.validate().catch(() => {});
-	if (!valid) return false;
+  const valid = await dataFormRef.value.validate().catch(() => {
+  });
+  if (!valid) return false;
 
-	try {
+  try {
     loading.value = true;
-		form.id ? await putObj(form) : await addObj(form);
-		useMessage().success(form.id ? '修改成功' : '添加成功');
-		visible.value = false;
-		emit('refresh');
-	} catch (err: any) {
-		useMessage().error(err.msg);
-	} finally {
+    form.id ? await putObj(form) : await addObj(form);
+    useMessage().success(form.id ? '修改成功' : '添加成功');
+    visible.value = false;
+    emit('refresh');
+  } catch (err: any) {
+    useMessage().error(err.msg);
+  } finally {
     loading.value = false;
   }
 };
@@ -138,6 +186,20 @@ const getiamsAccountData = (id: string) => {
     loading.value = false
   })
 };
+const snList = ref([])
+watch(
+    () => form.single,
+    (newSingle) => {
+      if (!newSingle) {
+        form.sn=''
+        fetchListNoPage({"status": "1"}).then((res) => {
+          snList.value = res.data
+        })
+      }else {
+        form.sns=[]
+      }
+    }
+)
 
 // 暴露变量
 defineExpose({

@@ -109,7 +109,7 @@ const iamsAssetOption = ref()
 const getIamsAssetData = () => {
   // 获取数据
   loading.value = true
-  fetchListNoPage().then((res: any) => {
+  fetchListNoPage({"status":"0"}).then((res: any) => {
     iamsAssetOption.value = res.data
   }).finally(() => {
     loading.value = false
