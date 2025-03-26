@@ -46,17 +46,23 @@ const title = ref("")
 const DeviceDetailDialog = defineAsyncComponent(() => import('./deviceDetail.vue'));
 
 const deviceDetailDialogRef = ref()
-onMounted(() => {
-  loading.value = true
-  getUnitDetail(props.id).then((res: any) => {
-    // 标题
-    title.value = res.data.cabinetName
-    unitDetails.value = res.data.unitDetails
-    computeSpanArr();
-  }).finally(() => {
-    loading.value = false
-  })
-})
+watch(
+  () => props.id,
+  (newId) => {
+    if (newId) {
+      loading.value = true;
+      getUnitDetail(newId).then((res: any) => {
+        // 标题
+        title.value = res.data.cabinetName;
+        unitDetails.value = res.data.unitDetails;
+        computeSpanArr();
+      }).finally(() => {
+        loading.value = false;
+      });
+    }
+  },
+  { immediate: true } // 立即执行一次
+);
 //合并行数
 const spanArr = [];
 const computeSpanArr = () => {
