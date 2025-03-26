@@ -2,42 +2,25 @@
   <el-dialog v-model="visible" :close-on-click-modal="false"
              :title="form.id ? '编辑' : '新增'" draggable>
     <el-form ref="dataFormRef" v-loading="loading" :model="form" :rules="dataRules" formDialogRef label-width="100px">
-      <el-row :gutter="24" v-show="form.single">
+      <el-row :gutter="24">
         <el-col :span='24' class="mb20">
-          <el-form-item  label="设备序列号" prop="sn">
-            <el-input v-model="form.sn" placeholder="请输入设备序列号">
-              <template #append>
-                <el-switch
-                    v-model="form.single"
-                    active-text="单一设备"
-                    inactive-text="多合一设备"
-                    inline-prompt
-                />
-              </template>
-            </el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row :gutter="24" v-show="!form.single">
-        <el-col :span='24' class="mb20">
-          <el-form-item  label="设备序列号" prop="sns">
-            <div style="display: flex;width: 100%">
-              <el-select v-model="form.sns" clearable collapse-tags filterable multiple placeholder="请选择设备"
-                         style="flex: 1">
-                <el-option v-for="(item, index) in snList"
-                           :key="index"
-                           :label="item.label"
-                           :value="item.value"
-                />
-              </el-select>
-              <el-switch
-                  v-model="form.single"
-                  active-text="单一设备"
-                  inactive-text="多合一设备"
-                  inline-prompt
-                  style="margin: 0 10px"
+          <el-form-item label="设备序列号" :prop="form.single?'sn':'sns'">
+            <el-input v-if="form.single" v-model="form.sn" placeholder="请输入设备序列号" style="flex: 1"/>
+            <el-select v-if="!form.single" v-model="form.sns" clearable collapse-tags filterable multiple placeholder="请选择设备"
+                       style="flex: 1">
+              <el-option v-for="(item, index) in snList"
+                         :key="index"
+                         :label="item.label"
+                         :value="item.label"
               />
-            </div>
+            </el-select>
+            <el-switch
+                v-model="form.single"
+                active-text="单一设备"
+                inactive-text="多合一设备"
+                inline-prompt
+				style="margin: 0 10px"
+            />
           </el-form-item>
         </el-col>
       </el-row>
@@ -191,12 +174,12 @@ watch(
     () => form.single,
     (newSingle) => {
       if (!newSingle) {
-        form.sn=''
+        form.sn = ''
         fetchListNoPage({"status": "1"}).then((res) => {
           snList.value = res.data
         })
-      }else {
-        form.sns=[]
+      } else {
+        form.sns = []
       }
     }
 )
