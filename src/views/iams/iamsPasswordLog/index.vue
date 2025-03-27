@@ -22,8 +22,8 @@
         @sort-change="sortChangeHandle">
         <el-table-column type="selection" width="40" align="center" />
         <el-table-column type="index" label="#" width="40" />
-          <el-table-column prop="assetId" label="设备"  show-overflow-tooltip/>
-          <el-table-column prop="accountId" label="账户"  show-overflow-tooltip/>
+          <el-table-column prop="role" label="设备"  show-overflow-tooltip/>
+          <el-table-column prop="account" label="账户"  show-overflow-tooltip/>
           <el-table-column prop="oldPassword" label="新密码"  show-overflow-tooltip/>
           <el-table-column prop="newPassword" label="旧密码"  show-overflow-tooltip/>
           <el-table-column prop="createTime" label="修改日期"  show-overflow-tooltip/>
