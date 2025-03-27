@@ -1,6 +1,28 @@
 <template>
   <div class="layout-padding">
     <div class="layout-padding-auto layout-padding-view">
+       <el-row v-show="showSearch">
+        <el-form :model="state.queryForm" ref="queryRef" :inline="true" @keyup.enter="getDataList">
+      <el-form-item label="甲方" prop="purchaser" >
+        <el-input placeholder="请输入甲方" v-model="state.queryForm.purchaser" />
+      </el-form-item>
+      <el-form-item label="乙方" prop="seller" >
+        <el-input placeholder="请输入乙方" v-model="state.queryForm.seller" />
+      </el-form-item>
+      <el-form-item label="签订日期" prop="signingTime">
+      <el-date-picker type="date" :value-format="dateStr" placeholder="请输入签订日期" v-model="state.queryForm.signingTime"></el-date-picker>
+      </el-form-item>
+      <el-form-item label="项目名称" prop="projectName" >
+        <el-input placeholder="请输入项目名称" v-model="state.queryForm.projectName" />
+      </el-form-item>
+          <el-form-item>
+            <el-button icon="search" type="primary" @click="getDataList">
+              查询
+            </el-button>
+            <el-button icon="Refresh" @click="resetQuery">重置</el-button>
+          </el-form-item>
+        </el-form>
+      </el-row>
       <el-row>
         <div class="mb8" style="width: 100%">
           <el-button icon="folder-add" type="primary" class="ml10" @click="formDialogRef.openDialog()"
