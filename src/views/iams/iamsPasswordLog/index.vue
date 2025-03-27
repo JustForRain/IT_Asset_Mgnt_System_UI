@@ -1,6 +1,31 @@
 <template>
   <div class="layout-padding">
     <div class="layout-padding-auto layout-padding-view">
+      <el-row v-show="showSearch">
+        <el-form :model="state.queryForm" ref="queryRef" :inline="true" @keyup.enter="getDataList">
+      <el-form-item label="设备角色" prop="role" >
+        <el-input placeholder="请输入设备角色" v-model="state.queryForm.role" />
+      </el-form-item>
+      <el-form-item label="帐号" prop="account" >
+        <el-input placeholder="请输入帐号" v-model="state.queryForm.account" />
+      </el-form-item>
+      <el-form-item label="序列号" prop="sn" >
+        <el-input placeholder="请输入序列号" v-model="state.queryForm.sn" />
+      </el-form-item>
+      <el-form-item label="新密码" prop="newPassword" >
+        <el-input placeholder="请输入新密码" v-model="state.queryForm.newPassword" />
+      </el-form-item>
+      <el-form-item label="旧密码" prop="oldPassword" >
+        <el-input placeholder="请输入旧密码" v-model="state.queryForm.oldPassword" />
+      </el-form-item>
+          <el-form-item>
+            <el-button icon="search" type="primary" @click="getDataList">
+              查询
+            </el-button>
+            <el-button icon="Refresh" @click="resetQuery">重置</el-button>
+          </el-form-item>
+        </el-form>
+      </el-row>
       <el-row>
         <div class="mb8" style="width: 100%">
           <el-button icon="folder-add" type="primary" class="ml10" @click="formDialogRef.openDialog()"
@@ -22,10 +47,10 @@
         @sort-change="sortChangeHandle">
         <el-table-column type="selection" width="40" align="center" />
         <el-table-column type="index" label="#" width="40" />
-          <el-table-column prop="role" label="设备"  show-overflow-tooltip/>
+          <el-table-column prop="role" label="设备角色"  show-overflow-tooltip/>
           <el-table-column prop="account" label="账户"  show-overflow-tooltip/>
-          <el-table-column prop="oldPassword" label="新密码"  show-overflow-tooltip/>
-          <el-table-column prop="newPassword" label="旧密码"  show-overflow-tooltip/>
+          <el-table-column prop="newPassword" label="新密码"  show-overflow-tooltip/>
+          <el-table-column prop="oldPassword" label="旧密码"  show-overflow-tooltip/>
           <el-table-column prop="createTime" label="修改日期"  show-overflow-tooltip/>
         <el-table-column label="操作" width="150">
           <template #default="scope">
