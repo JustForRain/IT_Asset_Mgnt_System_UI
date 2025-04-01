@@ -47,10 +47,13 @@
         <el-table-column align="center" type="selection" width="40"/>
         <el-table-column label="#" type="index" width="40"/>
         <el-table-column label="所属微模块" prop="moduleName" show-overflow-tooltip/>
+        <el-table-column label="名称" prop="name" show-overflow-tooltip/>
         <el-table-column label="大小" prop="size" show-overflow-tooltip/>
+        <el-table-column label="已上架设备数量" prop="assetNum" show-overflow-tooltip/>
+        <el-table-column label="已使用机架数量" prop="shelfUsedNum" show-overflow-tooltip/>
+        <el-table-column label="剩余机架数量" prop="shelfNum" show-overflow-tooltip/>
         <el-table-column label="所在行" prop="rowNum" show-overflow-tooltip/>
         <el-table-column label="所在列" prop="columnNum" show-overflow-tooltip/>
-        <el-table-column label="名称" prop="name" show-overflow-tooltip/>
         <el-table-column label="操作" width="150">
           <template #default="scope">
             <el-button v-auth="'iams_iamsCabinet_edit'" icon="edit-pen" text type="primary"
