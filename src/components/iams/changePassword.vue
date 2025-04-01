@@ -78,7 +78,6 @@ const onSubmit = async () => {
 
   try {
     loading.value = true;
-    console.log(form)
     await changePassword(form);
     useMessage().success('修改成功');
     visible.value = false;

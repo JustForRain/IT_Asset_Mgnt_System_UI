@@ -149,7 +149,6 @@ const fetchModuleListHandler = (val: string) => {
     loading.value = true;
     fetchModuleList({"name": val}).then((res) => {
       moduleList.value = []
-      console.log(res.data.records)
       res.data.records.forEach((item: any) => {
         moduleList.value.push({
           label: item.name,
