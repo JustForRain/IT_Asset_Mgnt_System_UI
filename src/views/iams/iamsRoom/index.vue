@@ -49,7 +49,7 @@
             <el-button icon="edit-pen" text type="primary" v-auth="'iams_iamsRoom_edit'"
               @click="formDialogRef.openDialog(scope.row.id)">编辑</el-button>
             <el-button icon="delete" text type="primary" v-auth="'iams_iamsRoom_del'" @click="handleDelete([scope.row.id])">删除</el-button>
-            <el-button icon="delete" text type="primary" v-auth="'iams_iamsRoom_view'" @click="roomDetailDialogRef.openDialog(scope.row.id)">查看</el-button>
+            <el-button icon="view" text type="primary" v-auth="'iams_iamsRoom_view'" @click="roomDetailDialogRef.openDialog(scope.row.id)">查看</el-button>
           </template>
         </el-table-column>
       </el-table>

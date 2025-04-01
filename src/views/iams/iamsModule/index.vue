@@ -58,7 +58,7 @@
             <el-button v-auth="'iams_iamsModule_del'" icon="delete" text type="primary"
                        @click="handleDelete([scope.row.id])">删除
             </el-button>
-            <el-button v-auth="'iams_iamsModule_view'" icon="delete" text type="primary"
+            <el-button v-auth="'iams_iamsModule_view'" icon="view" text type="primary"
                        @click="moduleDetailDialogRef.openDialog(scope.row.id)">查看
             </el-button>
           </template>
