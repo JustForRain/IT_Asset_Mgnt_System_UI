@@ -29,7 +29,7 @@
         </el-col>
 
         <el-col :span="12" class="mb20">
-          <el-form-item label="大小" prop="sn">
+          <el-form-item label="大小" prop="size">
             <el-input v-model="form.size" placeholder="大小"/>
           </el-form-item>
         </el-col>
