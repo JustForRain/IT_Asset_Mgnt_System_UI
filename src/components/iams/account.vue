@@ -8,7 +8,7 @@
     <el-row :gutter="24">
       <el-col :span="12" class="mb20">
         <el-form-item label="类型" prop="managerIp">
-          <el-input v-model="props.account.type" readonly @mousedown="copyText(props.account.id)"/>
+          <el-input v-model="props.account.type" readonly @mousedown="copyText(props.account.type)"/>
         </el-form-item>
       </el-col>
       <el-col :span="12" class="mb20">
@@ -18,22 +18,22 @@
       </el-col>
       <el-col :span="12" class="mb20">
         <el-form-item label="IP" prop="managerIp">
-          <el-input v-model="props.account.url" readonly @mousedown="copyText(props.account.id)"/>
+          <el-input v-model="props.account.url" readonly @mousedown="copyText(props.account.url)"/>
         </el-form-item>
       </el-col>
       <el-col :span="12" class="mb20">
         <el-form-item label="端口" prop="port">
-          <el-input v-model="props.account.port" readonly @mousedown="copyText(props.account.id)"/>
+          <el-input v-model="props.account.port" readonly/>
         </el-form-item>
       </el-col>
       <el-col :span="12" class="mb20">
         <el-form-item label="帐号" prop="managerAccount">
-          <el-input v-model="props.account.account" readonly @mousedown="copyText(props.account.id)"/>
+          <el-input v-model="props.account.account" readonly @mousedown="copyText(props.account.account)"/>
         </el-form-item>
       </el-col>
       <el-col :span="12" class="mb20">
         <el-form-item label="密码" prop="managerPassword">
-          <el-input v-model="props.account.password" readonly @mousedown="copyText(props.account.id)">
+          <el-input v-model="props.account.password" readonly @mousedown="copyText(props.account.password)">
             <template #append>
               <el-button @click="updatePasswordHandle">更新密码</el-button>
             </template>
@@ -65,6 +65,8 @@ const props = defineProps({
         password: '',
         type: '',
         url: '',
+        port: '',
+        protocol: '',
       };
     },
   }
